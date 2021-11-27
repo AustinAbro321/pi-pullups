@@ -31,8 +31,6 @@ vs = VideoStream(usePiCamera=True).start()
 #Time to warm up
 time.sleep(2.0)
 
-# start the FPS counter
-fps = FPS().start()
 
 f.seek(0)
 try:				
@@ -107,15 +105,8 @@ while True:
 	# quit when 'q' key is pressed
 	if key == ord("q"):
 		break
-
-	# update the FPS counter
-	fps.update()
+	
 	time.sleep(0.5)
-
-# stop the timer and display FPS information
-fps.stop()
-print("[INFO] elasped time: {:.2f}".format(fps.elapsed()))
-print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
 
 # do a bit of cleanup
 cv2.destroyAllWindows()
