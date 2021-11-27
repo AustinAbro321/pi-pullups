@@ -11,12 +11,13 @@ import cv2
 import drivers
 from time import sleep
 
+
+f = open("pullups-done.txt","r+")
+
 # Load the driver and set it to "display"
 # If you use something from the driver library use the "display." prefix first
 display = drivers.Lcd()
 
-#Initialize 'currentname' to trigger only when a new person is identified.
-currentname = "unknown"
 #Determine faces from encodings.pickle file model created from train_model.py
 encodingsP = "encodings.pickle"
 
@@ -32,6 +33,13 @@ time.sleep(2.0)
 
 # start the FPS counter
 fps = FPS().start()
+
+f.seek(0)
+try:				
+	num_of_pullups = int(f.read())
+except:
+	print("in except block")
+	num_of_pullups = 0
 
 # loop over frames from the video file stream
 while True:
@@ -73,12 +81,12 @@ while True:
 			name = max(counts, key=counts.get)
 
 			#If someone in your dataset is identified, print their name on the screen
-			if currentname == "Austin":
-				display.lcd_display_string("Hi Austin", 1)
-				print(currentname)
-			# else:
-			# 	display.lcd_display_string("Hi Rachel", 1)
-			# 	print(currentname)
+			if name == "Austin":
+				num_of_pullups += 1
+				f.seek(0)
+				f.truncate()				
+				f.write(str(num_of_pullups))
+				display.lcd_display_string(f"Pullups {num_of_pullups}", 1)
 
 		# update the list of names
 		names.append(name)
@@ -102,6 +110,7 @@ while True:
 
 	# update the FPS counter
 	fps.update()
+	time.sleep(0.5)
 
 # stop the timer and display FPS information
 fps.stop()
