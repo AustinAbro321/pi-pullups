@@ -49,7 +49,6 @@ while True:
 	boxes = face_recognition.face_locations(frame)
 	# compute the facial embeddings for each face bounding box
 	encodings = face_recognition.face_encodings(frame, boxes)
-	names = []
 
 	# loop over the facial embeddings
 	for encoding in encodings:
@@ -85,18 +84,6 @@ while True:
 				f.truncate()				
 				f.write(str(num_of_pullups))
 				display.lcd_display_string(f"Pullups {num_of_pullups}", 1)
-
-		# update the list of names
-		names.append(name)
-
-	# loop over the recognized faces
-	for ((top, right, bottom, left), name) in zip(boxes, names):
-		# draw the predicted face name on the image - color is in BGR
-		cv2.rectangle(frame, (left, top), (right, bottom),
-			(0, 255, 225), 2)
-		y = top - 15 if top - 15 > 15 else top + 15
-		cv2.putText(frame, name, (left, y), cv2.FONT_HERSHEY_SIMPLEX,
-			.8, (0, 255, 255), 2)
 
 	# display the image to our screen
 	cv2.imshow("Facial Recognition is Running", frame)
